@@ -1,3 +1,4 @@
+from sys import exit
 row_types = []
 user_data = []
 
@@ -38,12 +39,70 @@ def size_detection(questions, answers):
         return 'Unmatched questions to answers or vice-versa'
 
 
-def main_func(questions, answers):
-    current_question = 0
+def error_handling(questions,answers):
     possible_error = size_detection(questions, answers)
+    if possible_error == 'ok':
+        return
+    elif possible_error == 'Unmatched questions to answers or vice-versa':
+        print(possible_error)
+        exit(1)
+    elif possible_error == 'object types do not match':
+        print(possible_error)
+        exit(1)
+
+
+def main_func(questions, answers, declaredNontype, questionIndex):
+    error_handling(questions, answers)
+    current_row = -1
+    nonType = -1
+    current_question = 0
+    for question in questions:
+        current_question += 1
+        numbered_answers = False
+        user_input = ''
+        current_row += 1
+        choices_given = 0
+        if answers[current_row][0] is not None:
+            while user_input not in answers[current_row]:
+                if questionIndex[current_row] == current_question:
+                    numbered_answers = True
+                for choice in answers[current_row]:
+                    if not numbered_answers:
+                        print(choice)
+                if numbered_answers:
+                    user_input = int(0)
+                    while user_input not in range(1, choices_given + 1):
+                        choices_given = 0
+                        for choice in answers[current_row]:
+                            choices_given += 1
+                            print(f'{choices_given}) {choice}')
+                        try:
+                            user_input = int(input(question))
+                            user_data.append(user_input)
+                        except ValueError as ex:
+                            print(ex)
+                    break
+                else:
+                    user_input = input(question)
+        else:
+            nonType += 0
+            if declaredNontype[nonType] == 'str':
+                user_input = str(input(question))
+                user_data.append(user_input)
+            elif declaredNontype[nonType] == 'int':
+                not_error = True
+                while not_error:
+                    try:
+                        user_input = int(input(question))
+                        user_data.append(user_input)
+                        not_error = False
+                    except ValueError as ex:
+                        print(ex)
 
 
 if __name__ == '__main__':
-    main_func(questions=['q1', 'q2'], answers=[['Yes', 'no'], [None]])
+    main_func(questions=['Are you sure? ', 'What is your favorite number? '], answers=[['Yes', 'No'], [None]],
+              declaredNontype=['int'], questionIndex=([0]))
 # questions = main_func(questions=['What is your name? ', 'Is this your first time? ', 'How old are you? ',
-                                     # 'Will you quit? '], answers=[[None], ['Yes', 'No'], [None], ['of course', 'no I will not.']], declaredNontype=['str', 'int'], questionIndex=(0, 2))
+# 'Will you quit? '], answers=[[None], ['Yes', 'No'],
+# [None], ['of course', 'no I will not.']], declaredNontype=['str', 'int'], questionIndex=(0, 2))
