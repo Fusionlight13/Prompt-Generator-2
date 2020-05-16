@@ -1,5 +1,5 @@
 from sys import exit
-row_types = []
+
 user_data = []
 
 
@@ -88,6 +88,7 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
                     break
                 else:
                     user_input = input(question)
+                    user_data.append(user_input)
         else:
             nonType += 1
             if nonetype[nonType] == 'str':
@@ -102,7 +103,6 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
                         not_error = False
                     except ValueError as ex:
                         print(ex)
+    return user_data
 
 
-if __name__ == '__main__':
-    pass
