@@ -51,7 +51,7 @@ def error_handling(questions,answers):
         exit(1)
 
 
-def main_func(questions, answers, declaredNontype, questionIndex):
+def main_func(questions, answers, nonetype=None, questionIndex=None):
     error_handling(questions, answers)
     current_row = -1
     nonType = -1
@@ -64,8 +64,12 @@ def main_func(questions, answers, declaredNontype, questionIndex):
         choices_given = 0
         if answers[current_row][0] is not None:
             while user_input not in answers[current_row]:
-                if questionIndex[current_row] == current_question:
-                    numbered_answers = True
+                if questionIndex is not None:
+                    if not isinstance(questionIndex, list):
+                        if questionIndex == current_question:
+                            numbered_answers = True
+                    elif questionIndex[current_row] == current_question:
+                        numbered_answers = True
                 for choice in answers[current_row]:
                     if not numbered_answers:
                         print(choice)
@@ -85,11 +89,11 @@ def main_func(questions, answers, declaredNontype, questionIndex):
                 else:
                     user_input = input(question)
         else:
-            nonType += 0
-            if declaredNontype[nonType] == 'str':
+            nonType += 1
+            if nonetype[nonType] == 'str':
                 user_input = str(input(question))
                 user_data.append(user_input)
-            elif declaredNontype[nonType] == 'int':
+            elif nonetype[nonType] == 'int':
                 not_error = True
                 while not_error:
                     try:
@@ -101,8 +105,4 @@ def main_func(questions, answers, declaredNontype, questionIndex):
 
 
 if __name__ == '__main__':
-    main_func(questions=['Are you sure? ', 'What is your favorite number? '], answers=[['Yes', 'No'], [None]],
-              declaredNontype=['int'], questionIndex=([0]))
-# questions = main_func(questions=['What is your name? ', 'Is this your first time? ', 'How old are you? ',
-# 'Will you quit? '], answers=[[None], ['Yes', 'No'],
-# [None], ['of course', 'no I will not.']], declaredNontype=['str', 'int'], questionIndex=(0, 2))
+    pass
