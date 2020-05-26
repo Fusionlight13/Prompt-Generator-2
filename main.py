@@ -3,6 +3,24 @@ from sys import exit
 user_data = []
 
 
+def menu_maker(nav_options, input_text='Enter an option: '):
+    user_input = 0
+    mapped_input = {}
+    used_map = {}
+    for i in range(len(nav_options)):
+        mapped_input[i + 1] = nav_options[i]
+    print(mapped_input)
+    while user_input not in range(1, len(nav_options) + 1):
+        for option_count in range(len(nav_options)):
+            print(f'{option_count + 1}) {nav_options[option_count]}')
+        try:
+            user_input = int(input(input_text))
+        except ValueError as ex:
+            print(ex)
+    used_map[user_input] = mapped_input[user_input]
+    return used_map
+
+
 def define_types(answers):
     for row in answers:
         cutoff = False
@@ -106,3 +124,5 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
     return user_data
 
 
+rsp = menu_maker(['Start', 'Options', 'Quit'])
+print(rsp)
