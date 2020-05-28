@@ -3,13 +3,33 @@ from sys import exit
 user_data = []
 
 
+def continuous_input(required_info, ex_type='str', ex_command='/s'):
+    user_input = ''
+    answers = []
+    loop_iteration = 0
+    while user_input != ex_command:
+        loop_iteration += 1
+        user_input = input(f'{required_info} ({loop_iteration}): ')
+        if user_input == ex_command:
+            break
+        if ex_type == 'int':
+            try:
+                convert_data = int(user_input)
+                answers.append(convert_data)
+            except ValueError as ex:
+                print(ex)
+                loop_iteration -= 1
+        else:
+            answers.append(user_input)
+    return answers
+
+
 def menu_maker(nav_options, input_text='Enter an option: '):
     user_input = 0
     mapped_input = {}
     used_map = {}
     for i in range(len(nav_options)):
         mapped_input[i + 1] = nav_options[i]
-    print(mapped_input)
     while user_input not in range(1, len(nav_options) + 1):
         for option_count in range(len(nav_options)):
             print(f'{option_count + 1}) {nav_options[option_count]}')
@@ -72,7 +92,7 @@ def error_handling(questions,answers):
 def main_func(questions, answers, nonetype=None, questionIndex=None):
     error_handling(questions, answers)
     current_row = -1
-    nonType = -1
+    noneType = -1
     current_question = 0
     for question in questions:
         current_question += 1
@@ -108,11 +128,24 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
                     user_input = input(question)
                     user_data.append(user_input)
         else:
-            nonType += 1
-            if nonetype[nonType] == 'str':
-                user_input = str(input(question))
+            noneType += 1
+            if isinstance(nonetype, list):
+                if nonetype[noneType] == 'str':
+                    user_input = str(input(question))
+                    user_data.append(user_input)
+                elif nonetype[noneType] == 'int':
+                    not_error = True
+                    while not_error:
+                        try:
+                            user_input = int(input(question))
+                            user_data.append(user_input)
+                            not_error = False
+                        except ValueError as ex:
+                            print(ex)
+            elif nonetype == 'str':
+                ser_input = str(input(question))
                 user_data.append(user_input)
-            elif nonetype[nonType] == 'int':
+            elif nonetype == 'int':
                 not_error = True
                 while not_error:
                     try:
@@ -124,5 +157,4 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
     return user_data
 
 
-rsp = menu_maker(['Start', 'Options', 'Quit'])
-print(rsp)
+main_menu = main_func(['Are you older than 18? ', 'How would you rate this product? ', 'Would you have any ideas of how you could improve this product? '], answers=[['Yes', 'No'], ['One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'], [None]], nonetype=['str'], questionIndex=2)
