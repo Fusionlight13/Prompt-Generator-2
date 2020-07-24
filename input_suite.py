@@ -93,10 +93,10 @@ def error_handling(questions,answers):
     Questions: Must be a list but the length can be less than two. Questions and Answers must be of the same length. Ex: 2 questions and 2 pairs of answers.
     Answers: Must be a 2d matrix [[]]. Each answer pair inside of the main array can be any of length. Each pair must have the same data type. EXCEPTION RAISED. To have a custom input, use [None].
     none_type: Is REQUIRED for each none specified in Answers. Types must be in an array: ['str', 'int']. None's must match the none_type.
-    question_index: Converts text input of specified question count in an integer response corresponding to the length of answers given. If only one question is listed, an array is not required.
+    question_index: Converts text input of specified question count into an integer response corresponding to the length of answers given. If only one question is listed, an array is not required.
 
 """
-def main_func(questions, answers, none_type=None, question_index=None):
+def question_init(questions, answers, none_type=None, question_index=None):
     #
     error_handling(questions, answers)
     current_row = -1
@@ -168,6 +168,6 @@ def main_func(questions, answers, none_type=None, question_index=None):
 all_surveys = []
 for person in range(1, 3 + 1):
     print('Survey', len(all_surveys) + 1)
-    main_menu = main_func(['Are you older than 18? ', 'How would you rate this product? ', 'Would you have any ideas of how you could improve this product? '], answers=[['Yes', 'No'], ['One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'], [None]], none_type=['str'], question_index=2)
+    main_menu = question_init(['Are you older than 18? ', 'How would you rate this product? ', 'Would you have any ideas of how you could improve this product? '], answers=[['Yes', 'No'], ['One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'], [None]], none_type=['str'], question_index=2)
     all_surveys.append(main_menu)
 print(all_surveys)
