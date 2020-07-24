@@ -42,6 +42,7 @@ def menu_maker(nav_options, input_text='Enter an option: '):
 
 
 def define_types(answers):
+    #Checks for identical data types.
     for row in answers:
         cutoff = False
         row_size = len(row)
@@ -88,8 +89,15 @@ def error_handling(questions,answers):
         print(possible_error)
         exit(1)
 
+"""
+    Questions: Must be a list but the length can be less than two. Questions and Answers must be of the same length. Ex: 2 questions and 2 pairs of answers.
+    Answers: Must be a 2d matrix [[]]. Each answer pair inside of the main array can be any of length. Each pair must have the same data type. EXCEPTION RAISED. To have a custom input, use [None].
+    none_type: Is REQUIRED for each none specified in Answers. Types must be in an array: ['str', 'int']. None's must match the none_type.
+    question_index: Converts text input of specified question count in an integer response corresponding to the length of answers given. If only one question is listed, an array is not required.
 
-def main_func(questions, answers, nonetype=None, questionIndex=None):
+"""
+def main_func(questions, answers, none_type=None, question_index=None):
+    #
     error_handling(questions, answers)
     current_row = -1
     noneType = -1
@@ -102,11 +110,11 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
         choices_given = 0
         if answers[current_row][0] is not None:
             while user_input not in answers[current_row]:
-                if questionIndex is not None:
-                    if not isinstance(questionIndex, list):
-                        if questionIndex == current_question:
+                if question_index is not None:
+                    if not isinstance(question_index, list):
+                        if question_index == current_question:
                             numbered_answers = True
-                    elif questionIndex[current_row] == current_question:
+                    elif question_index[current_row] == current_question:
                         numbered_answers = True
                 for choice in answers[current_row]:
                     if not numbered_answers:
@@ -129,11 +137,11 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
                     user_data.append(user_input)
         else:
             noneType += 1
-            if isinstance(nonetype, list):
-                if nonetype[noneType] == 'str':
+            if isinstance(none_type, list):
+                if none_type[noneType] == 'str':
                     user_input = str(input(question))
                     user_data.append(user_input)
-                elif nonetype[noneType] == 'int':
+                elif none_type[noneType] == 'int':
                     not_error = True
                     while not_error:
                         try:
@@ -142,10 +150,10 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
                             not_error = False
                         except ValueError as ex:
                             print(ex)
-            elif nonetype == 'str':
+            elif none_type == 'str':
                 ser_input = str(input(question))
                 user_data.append(user_input)
-            elif nonetype == 'int':
+            elif none_type == 'int':
                 not_error = True
                 while not_error:
                     try:
@@ -157,4 +165,9 @@ def main_func(questions, answers, nonetype=None, questionIndex=None):
     return user_data
 
 
-main_menu = main_func(['Are you older than 18? ', 'How would you rate this product? ', 'Would you have any ideas of how you could improve this product? '], answers=[['Yes', 'No'], ['One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'], [None]], nonetype=['str'], questionIndex=2)
+all_surveys = []
+for person in range(1, 3 + 1):
+    print('Survey', len(all_surveys) + 1)
+    main_menu = main_func(['Are you older than 18? ', 'How would you rate this product? ', 'Would you have any ideas of how you could improve this product? '], answers=[['Yes', 'No'], ['One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'], [None]], none_type=['str'], question_index=2)
+    all_surveys.append(main_menu)
+print(all_surveys)
