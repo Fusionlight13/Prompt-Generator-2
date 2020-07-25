@@ -105,8 +105,10 @@ def question_init(questions, answers, none_type=None, question_index=None):
     for question in questions:
         current_question += 1
         numbered_answers = False
+        convert_input = False
         user_input = ''
         current_row += 1
+        temp_v = None
         choices_given = 0
         if answers[current_row][0] is not None:
             while user_input not in answers[current_row]:
@@ -134,7 +136,19 @@ def question_init(questions, answers, none_type=None, question_index=None):
                     break
                 else:
                     user_input = input(question)
-                    user_data.append(user_input)
+                    try:
+                        temp_v = int(user_input)
+                        if temp_v in answers[current_row]:
+                            convert_input = True
+                            break
+                    except ValueError as ex:
+                        print(ex)
+            if convert_input:
+                user_data.append(temp_v)
+            else:
+                user_data.append(user_input)
+
+
         else:
             noneType += 1
             if isinstance(none_type, list):
@@ -151,7 +165,7 @@ def question_init(questions, answers, none_type=None, question_index=None):
                         except ValueError as ex:
                             print(ex)
             elif none_type == 'str':
-                ser_input = str(input(question))
+                user_input = str(input(question))
                 user_data.append(user_input)
             elif none_type == 'int':
                 not_error = True
@@ -164,10 +178,11 @@ def question_init(questions, answers, none_type=None, question_index=None):
                         print(ex)
     return user_data
 
-
-all_surveys = []
-for person in range(1, 3 + 1):
-    print('Survey', len(all_surveys) + 1)
-    main_menu = question_init(['Are you older than 18? ', 'How would you rate this product? ', 'Would you have any ideas of how you could improve this product? '], answers=[['Yes', 'No'], ['One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'], [None]], none_type=['str'], question_index=2)
-    all_surveys.append(main_menu)
-print(all_surveys)
+test = question_init(['What is your name? ', 'What grade are you in? '], [[None], [1, 2, 3, 4]], none_type='str')
+print(test)
+# all_surveys = []
+# for person in range(1, 3 + 1):
+#     print('Survey', len(all_surveys) + 1)
+#     main_menu = question_init(['Are you older than 18? ', 'How would you rate this product? ', 'Would you have any ideas of how you could improve this product? '], answers=[['Yes', 'No'], ['One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'], [None]], none_type=['str'], question_index=2)
+#     all_surveys.append(main_menu)
+# print(all_surveys)
