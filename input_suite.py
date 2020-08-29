@@ -26,6 +26,9 @@ def continuous_input(required_info, ex_type='str', ex_command='/s'):
 
 def menu_maker(nav_options, input_text='Enter an option: '):
     user_input = 0
+    used_keys = []
+    used_items = []
+
     mapped_input = {}
     used_map = {}
     for i in range(len(nav_options)):
@@ -38,7 +41,10 @@ def menu_maker(nav_options, input_text='Enter an option: '):
         except ValueError as ex:
             print(ex)
     used_map[user_input] = mapped_input[user_input]
-    return used_map
+    for key, value in used_map.items():
+        used_keys.append(key)
+        used_items.append(value)
+    return used_map, used_keys, used_items
 
 
 def define_types(answers):
